@@ -24,7 +24,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<CoinsTes
   return (
     <div className="coins">
       <div className="meter" role="img" aria-label={`${total} of ${test.target} paid`}>
-        <div className="meter-fill" style={{ width: `${(100 * total) / test.target}%` }} />
+        <div className="meter-fill" style={{ transform: `scaleX(${total / test.target})` }} />
         <span className="meter-text">
           {total} / {test.target}
         </span>
@@ -34,7 +34,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<CoinsTes
           <button
             key={coin}
             className="coin"
-            style={{ '--grow': Math.sqrt(coin / biggest) } as CSSProperties}
+            style={{ '--grow': Math.sqrt(coin / biggest), '--i': i } as CSSProperties}
             onClick={() => change(i, 1)}
             aria-label={`Add a ${coin} coin`}
           >

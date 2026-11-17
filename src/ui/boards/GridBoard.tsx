@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from 'react'
+import type { CSSProperties, KeyboardEvent } from 'react'
 import type { GridAnswer, GridTest } from '../../core/problems/grid'
 import type { BoardKit, BoardProps } from './kit'
 
@@ -62,6 +62,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<GridTest
             <button
               key={`${r}-${c}`}
               className={classes.join(' ')}
+              style={{ '--i': r + c } as CSSProperties}
               onClick={() => click(r, c)}
               aria-label={`Row ${r + 1}, column ${c + 1}, gold ${cell}${at !== -1 ? ', on your path' : ''}`}
             >

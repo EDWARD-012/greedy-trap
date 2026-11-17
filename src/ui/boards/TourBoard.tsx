@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { blocks, type TourAnswer, type TourTest } from '../../core/problems/tour'
 import { type BoardKit, type BoardProps, pressable } from './kit'
 
@@ -25,12 +26,13 @@ function Board({ test, answer, locked, onChange }: BoardProps<TourTest, TourAnsw
     onChange(visited === -1 ? [...answer, stop] : answer.slice(0, visited + 1))
   }
 
-  // Streets are a grid, so each leg is drawn along them: across, then up or down.
-  let path = `M ${at(0).join(' ')}`
-  for (const stop of answer) {
+  // Streets are a grid, so each leg is drawn along them: across, then up or
+  // down. One path per leg, so a new leg draws itself when it is added.
+  const legs = answer.map((stop, k) => {
+    const [fromX, fromY] = at(k === 0 ? 0 : answer[k - 1])
     const [x, y] = at(stop)
-    path += ` H ${x} V ${y}`
-  }
+    return { key: `${k}-${stop}`, d: `M ${fromX} ${fromY} H ${x} V ${y}` }
+  })
 
   return (
     <svg className="tour" viewBox={`0 0 ${SIDE} ${SIDE}`} role="group" aria-label="Street grid with the depot and stops">
@@ -40,7 +42,9 @@ function Board({ test, answer, locked, onChange }: BoardProps<TourTest, TourAnsw
           <line y1={PAD} y2={SIDE - PAD} x1={PAD + i * gap} x2={PAD + i * gap} />
         </g>
       ))}
-      <path className="tour-path" d={path} />
+      {legs.map((leg) => (
+        <path key={leg.key} className="leg" pathLength={1} d={leg.d} />
+      ))}
       <g
         className="depot"
         {...pressable('Depot. Click to clear the route', () => {
@@ -63,6 +67,7 @@ function Board({ test, answer, locked, onChange }: BoardProps<TourTest, TourAnsw
           <g
             key={stop}
             className={classes.join(' ')}
+            style={{ '--i': stop } as CSSProperties}
             {...pressable(`Stop ${stop}${order !== -1 ? `, visited ${order + 1}` : ''}`, () => click(stop))}
           >
             <circle cx={x} cy={y} r={16} />

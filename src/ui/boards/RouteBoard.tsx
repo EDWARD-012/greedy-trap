@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { RouteAnswer, RouteTest } from '../../core/problems/route'
 import { type BoardKit, type BoardProps, pressable } from './kit'
 
@@ -51,7 +52,8 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<RouteTes
         const [x1, y1] = spots[road.a]
         const [x2, y2] = spots[road.b]
         const at = answer.indexOf(road.a)
-        const on = at !== -1 && (answer[at + 1] === road.b || answer[at - 1] === road.b)
+        const leftA = at !== -1 && answer[at + 1] === road.b
+        const on = leftA || (at !== -1 && answer[at - 1] === road.b)
         // Labels sit a third of the way along, clear of where roads cross.
         // Roads inside one column are short, so theirs go in the middle.
         const along = Math.abs(x2 - x1) < 1 ? 0.5 : 0.3
@@ -60,6 +62,16 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<RouteTes
         return (
           <g key={`${road.a}-${road.b}`} className={on ? 'road on' : 'road'}>
             <line x1={x1} y1={y1} x2={x2} y2={y2} />
+            {on && (
+              <line
+                className="trail"
+                pathLength={1}
+                x1={leftA ? x1 : x2}
+                y1={leftA ? y1 : y2}
+                x2={leftA ? x2 : x1}
+                y2={leftA ? y2 : y1}
+              />
+            )}
             <rect x={lx - 12} y={ly - 10} width={24} height={20} rx={6} />
             <text x={lx} y={ly + 5} textAnchor="middle">
               {road.w}
@@ -74,7 +86,12 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<RouteTes
         if (!locked && !arrived && !answer.includes(town) && toll(test, head, town) !== undefined) classes.push('next')
         if (town === 0 || town === test.n - 1) classes.push('end')
         return (
-          <g key={town} className={classes.join(' ')} {...pressable(`Town ${name(test, town)}`, () => click(town))}>
+          <g
+            key={town}
+            className={classes.join(' ')}
+            style={{ '--i': town } as CSSProperties}
+            {...pressable(`Town ${name(test, town)}`, () => click(town))}
+          >
             <circle cx={x} cy={y} r={18} />
             <text x={x} y={y + 5} textAnchor="middle">
               {name(test, town)}

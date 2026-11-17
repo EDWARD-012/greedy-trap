@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { clash, type GigsAnswer, type GigsTest } from '../../core/problems/gigs'
 import { type BoardKit, type BoardProps, plural, pressable } from './kit'
 
@@ -60,6 +61,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<GigsTest
             key={i}
             className={`gig${on ? ' on' : ''}${blocked ? ' blocked' : ''}`}
             aria-pressed={on}
+            style={{ '--i': i } as CSSProperties}
             {...pressable(`Gig from ${gig.s} to ${gig.e}, pays ${gig.v}`, () => toggle(i))}
           >
             <rect x={x} y={y} width={width} height={LANE - 12} rx={9} />

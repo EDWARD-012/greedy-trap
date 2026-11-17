@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { todayUtc } from './core/levels'
 import { findProblem } from './core/problems'
+import { Logo } from './ui/Logo'
 import { Daily } from './ui/pages/Daily'
 import { Home } from './ui/pages/Home'
 import { ProblemPage, type Source } from './ui/pages/ProblemPage'
@@ -15,6 +16,13 @@ function Page() {
   const [section, id, levelText] = route
   const problem = id ? findProblem(id) : undefined
   const date = todayUtc()
+
+  // Links are plain anchors, so a new page would otherwise open wherever the
+  // last one was scrolled to.
+  const path = route.join('/')
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [path])
 
   // Opening a daily problem directly also starts the round clock.
   const daily = section === 'daily' && problem !== undefined
@@ -37,28 +45,38 @@ function Page() {
 }
 
 export function App() {
-  // The page background has a soft light that follows the pointer.
+  // A soft light follows the pointer. Only its own transform changes, once a
+  // frame at most.
+  const light = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    let frame = 0
     const move = (event: PointerEvent) => {
-      document.documentElement.style.setProperty('--mx', `${event.clientX}px`)
-      document.documentElement.style.setProperty('--my', `${event.clientY}px`)
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        if (light.current) light.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`
+      })
     }
     window.addEventListener('pointermove', move)
-    return () => window.removeEventListener('pointermove', move)
+    return () => {
+      window.removeEventListener('pointermove', move)
+      cancelAnimationFrame(frame)
+    }
   }, [])
 
   return (
     <>
-      <div className="spotlight" aria-hidden="true" />
+      <div ref={light} className="spotlight" aria-hidden="true" />
       <nav className="topbar">
         <a className="logo" href="#/">
-          <span className="logo-mark" aria-hidden="true" />
+          <Logo size={34} className="snap" />
           greedy trap
         </a>
         <div className="topbar-links">
           <a href="#/daily">Today's round</a>
           <a href="#/">Problems</a>
-          <a href={REPO}>GitHub</a>
+          <a className="wide-only" href={REPO}>
+            GitHub
+          </a>
         </div>
       </nav>
       <Page />

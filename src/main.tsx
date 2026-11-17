@@ -1,5 +1,5 @@
 import '@fontsource-variable/jetbrains-mono'
-import '@fontsource-variable/space-grotesk'
+import '@fontsource-variable/bricolage-grotesque/standard.css'
 import './styles.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

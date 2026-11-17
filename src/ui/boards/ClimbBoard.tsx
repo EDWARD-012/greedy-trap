@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { ClimbAnswer, ClimbTest } from '../../core/problems/climb'
 import { type BoardKit, type BoardProps, plural } from './kit'
 
@@ -22,6 +23,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<ClimbTes
         <button
           key={i}
           className={answer.includes(i) ? 'card on' : 'card'}
+          style={{ '--i': i } as CSSProperties}
           onClick={() => toggle(i)}
           aria-pressed={answer.includes(i)}
           aria-label={`Card ${card}`}

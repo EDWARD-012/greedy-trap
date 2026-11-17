@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { type CSSProperties, useEffect, useState } from 'react'
 import { roundNumber, todayUtc } from '../../core/levels'
 import { problems } from '../../core/problems'
+import { Balloon } from '../Balloon'
 import { standing, startRound, useSave } from '../storage'
+import { hues } from '../theme'
 
 function useNow(): number {
   const [now, setNow] = useState(Date.now())
@@ -49,7 +51,7 @@ export function Daily() {
   return (
     <main className="daily">
       <header className="daily-head">
-        <p className="eyebrow">{date} · same seven tests for everyone</p>
+        <p className="muted">{date}, the same seven tests for everyone</p>
         <h1>Round {number}</h1>
         <p className="lede">
           One level of each problem, scored like an ICPC contest: most problems solved wins, and ties go to the lower
@@ -73,8 +75,15 @@ export function Daily() {
                 <tr>
                   <th>Solved</th>
                   <th>Penalty</th>
-                  {problems.map((problem) => (
-                    <th key={problem.id}>{problem.letter}</th>
+                  {problems.map((problem, i) => (
+                    <th key={problem.id}>
+                      <Balloon
+                        letter={problem.letter}
+                        hue={hues[problem.id]}
+                        filled={score.cells[i][0] === '+'}
+                        size={28}
+                      />
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -101,8 +110,13 @@ export function Daily() {
 
           <div className="problem-list">
             {problems.map((problem, i) => (
-              <a key={problem.id} className="problem-row" href={`#/daily/${problem.id}`}>
-                <span className="letter">{problem.letter}</span>
+              <a
+                key={problem.id}
+                className="problem-row"
+                href={`#/daily/${problem.id}`}
+                style={{ '--hue': hues[problem.id] } as CSSProperties}
+              >
+                <Balloon letter={problem.letter} hue={hues[problem.id]} filled={score.cells[i][0] === '+'} />
                 <span className="problem-name">
                   <strong>{problem.title}</strong>
                   <span className="muted">{problem.greedyRule}</span>
@@ -122,7 +136,7 @@ export function Daily() {
                   ) : (
                     <span className="muted">not tried</span>
                   )}
-                  <span className="go">Open →</span>
+                  <span className="go">Open</span>
                 </span>
               </a>
             ))}

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { KnapsackAnswer, KnapsackTest } from '../../core/problems/knapsack'
 import { type BoardKit, type BoardProps, plural } from './kit'
 
@@ -37,7 +38,7 @@ function Board({ test, answer, locked, onChange, complain }: BoardProps<Knapsack
           <button
             key={i}
             className={answer.includes(i) ? 'item on' : 'item'}
-            style={{ flexGrow: item.w, flexBasis: `${item.w * 16}px` }}
+            style={{ flexGrow: item.w, flexBasis: `${item.w * 16}px`, '--i': i } as CSSProperties}
             onClick={() => toggle(i)}
             aria-pressed={answer.includes(i)}
             aria-label={`Item worth ${item.v}, ${item.w} kg`}

@@ -1,10 +1,12 @@
-import { type CSSProperties, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Judgement } from '../core/judge'
 import type { Problem } from '../core/types'
+import { Balloon } from './Balloon'
+import { Logo } from './Logo'
+import { calm } from './motion'
+import { hues } from './theme'
 
 const STEP_MS = 420
-
-const calm = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // Runs the tests one at a time, the way a judge page ticks through them, and
 // stops at the first failure. `replay` is for a verdict that was already
@@ -61,8 +63,13 @@ export function Verdict({
       </ol>
       {finished && (
         <div className="stamp-row">
-          <div className="stamp">{accepted ? 'Accepted' : `Wrong answer on test ${result.failedTest}`}</div>
-          {accepted && <Confetti />}
+          <div className={accepted ? 'stamp ac' : 'stamp wa'}>
+            {accepted ? 'Accepted' : `Wrong answer on test ${result.failedTest}`}
+          </div>
+          {/* A balloon for a solve, the way a contest hands one out. The trap
+              snaps shut when the answer was the greedy one. */}
+          {accepted && <Balloon letter={problem.letter} hue={hues[problem.id]} filled className="rise" size={46} />}
+          {result.matchedGreedy && <Logo size={52} className="snap" />}
         </div>
       )}
       {finished && (
@@ -95,22 +102,4 @@ function note(problem: Problem, result: Judgement): string {
   if (result.matchedGreedy) return `Scores are in ${problem.unit}, ${direction}. You matched greedy, which is the trap.`
   if (result.failedTest === 2) return `Scores are in ${problem.unit}, ${direction}. Greedy did better than that.`
   return `Scores are in ${problem.unit}, ${direction}. You beat greedy, and there is still a better answer.`
-}
-
-function Confetti() {
-  return (
-    <span className="confetti" aria-hidden="true">
-      {Array.from({ length: 26 }, (_, i) => {
-        const angle = (i / 26) * Math.PI * 2
-        const reach = 70 + ((i * 37) % 60)
-        const style = {
-          '--dx': `${Math.cos(angle) * reach}px`,
-          '--dy': `${Math.sin(angle) * reach - 30}px`,
-          '--spin': `${(i * 67) % 360}deg`,
-          '--hue': i % 3,
-        } as CSSProperties
-        return <i key={i} style={style} />
-      })}
-    </span>
-  )
 }

@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useState } from 'react'
+import { type CSSProperties, useCallback, useMemo, useState } from 'react'
 import { type Judgement, judge } from '../../core/judge'
 import { dailyLevel, practiceLevel, roundNumber } from '../../core/levels'
 import type { Problem } from '../../core/types'
+import { Balloon } from '../Balloon'
 import { boards } from '../boards'
 import { Editorial } from '../Editorial'
 import { Hack } from '../Hack'
 import { go } from '../router'
 import { markSolved, recordRun, useSave } from '../storage'
+import { hues } from '../theme'
 import { Verdict } from '../Verdict'
 
 type Tab = 'solve' | 'hack' | 'editorial'
@@ -101,13 +103,13 @@ export function ProblemPage({ problem, source }: { problem: Problem; source: Sou
   const Board = kit.Board
 
   return (
-    <main className="problem-page">
+    <main className="problem-page" style={{ '--hue': hues[problem.id] } as CSSProperties}>
       <header className="problem-head">
         <a className="crumb" href={source.kind === 'daily' ? '#/daily' : '#/'}>
-          {source.kind === 'daily' ? `← Round ${roundNumber(source.date)}` : '← Problems'}
+          {source.kind === 'daily' ? `Back to round ${roundNumber(source.date)}` : 'Back to all problems'}
         </a>
         <div className="problem-title">
-          <span className="letter">{problem.letter}</span>
+          <Balloon letter={problem.letter} hue={hues[problem.id]} filled={solvedBefore || accepted} size={38} />
           <h1>{problem.title}</h1>
           {solvedBefore && <span className="badge ac">Solved</span>}
         </div>
@@ -128,7 +130,7 @@ export function ProblemPage({ problem, source }: { problem: Problem; source: Sou
                 ‹
               </button>
               <span>
-                Level {source.level} · {SIZE_NAMES[level.size]}
+                Level {source.level}, {SIZE_NAMES[level.size]}
               </span>
               <button
                 className="button small"
@@ -199,7 +201,10 @@ export function ProblemPage({ problem, source }: { problem: Problem; source: Sou
                 </div>
               )}
 
-              <div className={`board${locked ? ' locked' : ''}`}>
+              <div
+                className={`board${locked ? ' locked' : ''}${settled && verdict === 'WA' ? ' wrong' : ''}`}
+                data-view={view}
+              >
                 <Board test={test} answer={shown} locked={locked} onChange={edit} complain={complain} />
               </div>
 
@@ -223,7 +228,7 @@ export function ProblemPage({ problem, source }: { problem: Problem; source: Sou
                 )}
                 {accepted && source.kind === 'practice' && custom === null && (
                   <button className="button primary" onClick={() => go(`p/${problem.id}/${source.level + 1}`)}>
-                    Next level →
+                    Next level
                   </button>
                 )}
                 {accepted && source.kind === 'daily' && (
