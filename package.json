@@ -1,0 +1,42 @@
+{
+  "name": "greedy-trap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A browser puzzle game where the greedy move always loses, judged by exact solvers with contest-style verdicts.",
+  "license": "MIT",
+  "author": "Ravi Kumar Gupta",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "stats": "tsx scripts/stats.ts",
+    "example": "tsx scripts/example.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/space-grotesk": "5.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.8",
+    "vitest": "5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EDWARD-012/greedy-trap.git"
+  },
+  "homepage": "https://edward-012.github.io/greedy-trap/"
+}
