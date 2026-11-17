@@ -21,9 +21,7 @@ export function Home() {
           {/* The headline is a greedy rule, and the page marks it wrong. */}
           <div className="judged">
             <h1>Always take the biggest coin.</h1>
-            <svg className="strike" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <path pathLength={1} d="M1 90 C 22 70, 40 62, 56 44 S 84 20, 99 9" />
-            </svg>
+            <span className="strike" aria-hidden="true" />
             <span className="stamp wa">Wrong answer on test 2</span>
           </div>
           <p className="lede">

@@ -51,6 +51,9 @@ body {
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px 48px;
+  /* Things that slam or slide in start outside their final spot. Without this
+     a phone would scroll sideways until they land. */
+  overflow-x: clip;
 }
 
 /* A soft light under the pointer. It is moved with a transform from JS so
@@ -297,7 +300,8 @@ a {
 
 /* Balloons */
 
-.balloon {
+.balloon,
+.logo-mark {
   flex: none;
   overflow: visible;
 }
@@ -376,25 +380,25 @@ a {
 }
 
 /* The greedy rule in the headline gets judged in front of you: a pen stroke
-   through it, then the stamp. */
+   through it, then the stamp. The stroke is a plain bar revealed left to
+   right with a clip, which behaves the same in every browser. */
 .strike {
   position: absolute;
-  left: -2%;
-  top: 0;
-  width: 104%;
-  height: 100%;
+  left: -3%;
+  top: 50%;
+  width: 106%;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 3px;
+  background: var(--trap);
   pointer-events: none;
-  overflow: visible;
+  transform: rotate(-14deg);
+  clip-path: inset(0 0 0 0);
+  animation: strike 620ms var(--ease-in-out) 500ms backwards;
 }
 
-.strike path {
-  fill: none;
-  stroke: var(--trap);
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  vector-effect: non-scaling-stroke;
-  animation: draw 620ms var(--ease-in-out) 500ms backwards;
+@keyframes strike {
+  from { clip-path: inset(0 100% 0 0); }
 }
 
 @keyframes draw {
@@ -1331,6 +1335,7 @@ svg {
 
 .stamp-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 18px;
   min-height: 64px;
