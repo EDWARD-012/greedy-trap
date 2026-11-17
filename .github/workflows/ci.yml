@@ -26,10 +26,23 @@ jobs:
         with:
           path: dist
 
+  # Plays the game in Chromium, Firefox and WebKit.
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run e2e
+
   # Publishes the build from the test job to GitHub Pages.
   deploy:
     if: github.event_name == 'push'
-    needs: test
+    needs: [test, e2e]
     runs-on: ubuntu-latest
     permissions:
       pages: write

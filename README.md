@@ -44,6 +44,16 @@ npm run dev
 
 `npm run dev` prints a local address to open. `npm run build` writes the static site to `dist/`.
 
+The browser tests need Playwright's browsers once, then one command:
+
+```bash
+npx playwright install
+```
+
+```bash
+npm run e2e
+```
+
 ## A worked example
 
 `npm run example` takes practice level 1 of problem A and prints this:
@@ -79,6 +89,8 @@ The judge also checks itself while it runs. If greedy or a player's answer ever 
 
 Levels come from a seed. The seed string is hashed with FNV-1a into a mulberry32 generator, and random tests are drawn until one is a trap. The same seed gives the same level on every machine, and a test pins level 1 of every problem so that a change to a generator cannot slip through unnoticed.
 
+The interface is tested by playing it. `e2e/smoke.spec.ts` drives a real browser: it solves the level on the front page, solves one level of every problem by clicking the board, submits the greedy answer and expects "Wrong answer on test 2", runs hacks, and plays a daily round through to the standings. It runs in Chromium, Firefox and WebKit and at a phone-sized viewport, and any console error fails the test.
+
 The numbers in this README are checked as well. `tests/readme.test.ts` regenerates the worked example above and the table below, and fails if this file says anything different.
 
 ## How often greedy loses
@@ -109,10 +121,11 @@ src/core/            game logic with no UI and no dependencies
   stats.ts           the table above
 src/ui/              the React interface
 tests/               brute-force checks, judge, levels, README
+e2e/                 browser tests that play the game
 scripts/             npm run stats, npm run example
 ```
 
-Dependencies are pinned to exact versions in `package.json` and `package-lock.json`. GitHub Actions runs the type check, the tests and the build on every push to `main` and on pull requests, and publishes the site from `main`.
+Dependencies are pinned to exact versions in `package.json` and `package-lock.json`. GitHub Actions runs the type check, the unit tests, the build and the browser tests on every push to `main` and on pull requests, and publishes the site from `main` only if all of them pass.
 
 ## Limits
 
@@ -121,7 +134,8 @@ Dependencies are pinned to exact versions in `package.json` and `package-lock.js
 - A level counts as a trap when greedy is worse than the optimum by any amount. Sometimes that is a single coin.
 - The solvers are tested against brute force on random tests. That is evidence, not a proof.
 - There is no server. Progress lives in your browser's local storage, the daily standings show only your own row, and the round clock is your device's clock. Everything runs in the page, so anyone who reads the source can compute the answers. It is a game, not a proctored contest.
-- The interface has no automated tests. It was checked by hand in a Chromium browser at desktop and phone widths, and has not been tried in Firefox or Safari.
+- The browser tests run in Playwright's Chromium, Firefox and WebKit builds. WebKit is Safari's engine, but it is not Safari, and the phone test is a phone-sized viewport on a desktop machine. Real Safari and real phones have not been tried.
+- The browser tests check that the game works and that animated things end up where they should. Whether the motion feels right is a matter of taste and no test covers it.
 - Hack inputs are capped at the sizes listed under each problem's constraints.
 
 ## Licence
