@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Greedy Trap logo">
+  <circle cx="32" cy="32" r="6.5" fill="#f4b740" stroke="#a86c0c" stroke-width="1.5"/>
+  <path fill="#ff5a36" d="M5 22 A27 14 0 0 1 59 22 L52.25 29 L45.5 22 L38.75 29 L32 22 L25.25 29 L18.5 22 L11.75 29 Z"/>
+  <path fill="#ff5a36" d="M5 42 A27 14 0 0 0 59 42 L52.25 35 L45.5 42 L38.75 35 L32 42 L25.25 35 L18.5 42 L11.75 35 Z"/>
+</svg>

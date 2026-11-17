@@ -1,14 +1,48 @@
-# Greedy Trap
+<p align="center">
+  <img src="docs/logo.svg" width="110" alt="Greedy Trap logo: a trap biting a gold coin">
+</p>
 
-A browser puzzle game made of seven small optimisation problems. Every level is picked so that the obvious greedy strategy gets it wrong. You look for the answer greedy misses, and an exact solver judges it with a contest-style verdict.
+<h1 align="center">Greedy Trap</h1>
 
-Play it here: https://edward-012.github.io/greedy-trap/
+<p align="center">
+  A browser puzzle game made of seven small optimisation problems.<br>
+  Every level is picked so that the obvious greedy strategy gets it wrong.
+</p>
 
-![The front page: a greedy rule struck out and stamped as a wrong answer, with the first level playable beside it](docs/screenshot.jpg)
+<p align="center">
+  <a href="https://edward-012.github.io/greedy-trap/"><b>Play it in your browser</b></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/EDWARD-012/greedy-trap/actions/workflows/ci.yml"><img src="https://github.com/EDWARD-012/greedy-trap/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+</p>
+
+<p align="center">
+  <img src="docs/play.gif" width="760" alt="The front page loads, its headline rule is struck out and stamped as a wrong answer, then the first level is solved with three coins and judged Accepted">
+</p>
+
+You look for the answer greedy misses, and an exact solver judges it with a contest-style verdict. The level in the clip above sits on the front page, so you can play within a few seconds of opening the site.
 
 I build RL environments and automated graders for AI evaluation work. A grader is only worth something if you can check it, so this game is put together the way I would put one of those together: a seeded task generator, a baseline to beat, a reference solution, and a judge whose claims are each backed by a test.
 
 ## The seven problems
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/board-coins.png" alt="A. Exact change: coins on the counter, paying the target exactly"><br><b>A. Exact change</b></td>
+    <td align="center" width="33%"><img src="docs/board-knapsack.png" alt="B. Carry-on: items packed into the bag"><br><b>B. Carry-on</b></td>
+    <td align="center" width="33%"><img src="docs/board-gigs.png" alt="C. Double booked: gigs picked on a day timeline"><br><b>C. Double booked</b></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="docs/board-grid.png" alt="D. Down and right: a walk across the grid"><br><b>D. Down and right</b></td>
+    <td align="center" width="33%"><img src="docs/board-route.png" alt="E. Toll roads: a route across the road map"><br><b>E. Toll roads</b></td>
+    <td align="center" width="33%"><img src="docs/board-tour.png" alt="F. Last mile: a courier route on the street grid"><br><b>F. Last mile</b></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><img src="docs/board-climb.png" alt="G. Staircase: cards picked to form a rising run"><br><b>G. Staircase</b></td>
+    <td colspan="2">Each board is shown with an optimal answer on it. Your answer is painted in the problem's own colour, greedy's in red and the optimum in green, so the three never get mixed up.</td>
+  </tr>
+</table>
 
 | | Problem | The greedy you play against | What solves it |
 | --- | --- | --- | --- |
@@ -20,15 +54,45 @@ I build RL environments and automated graders for AI evaluation work. A grader i
 | F | Last mile | Always drive to the nearest stop you have not visited. On a tie take the lower-numbered stop. | Bitmask DP (Held-Karp) |
 | G | Staircase | Take the first card, then every later card that is larger than your last pick. | Longest increasing subsequence with binary search |
 
-Each problem has three tabs.
+## Three tabs on every problem
 
-Solve is the game itself. You work the level out on the board and submit. The answer goes through up to three tests in order: it follows the rules, it beats greedy, it matches the optimum. The verdict names the first test it fails, as in "Wrong answer on test 2".
+### Solve
 
-Hack turns it around. You write an input in the problem's input format, the way you would for a hack in a contest. A validator checks it against the constraints, then greedy and the exact solver both run on it. If greedy comes out worse, the hack succeeds and you can play your own test.
+You work the level out on the board and submit. The answer goes through up to three tests in order: it follows the rules, it beats greedy, it matches the optimum. The verdict names the first test it fails. An accepted answer earns that problem's balloon, the way a contest hands one out, and an answer that matches greedy makes the trap snap shut.
 
-Editorial explains why the greedy fails and which technique gets it right, with the recurrence and the running time. After you solve a level it also shows the solver's table for that exact test, and you can put greedy's answer and the optimal one on the board to compare.
+<table>
+  <tr>
+    <td width="50%"><img src="docs/verdict-accepted.png" alt="Verdict panel: three tests OK, the stamp Accepted and a balloon"></td>
+    <td width="50%"><img src="docs/verdict-wrong.png" alt="Verdict panel: test 2 failed, the stamp Wrong answer on test 2 and the trap logo"></td>
+  </tr>
+</table>
 
-There is also a daily round: one level of each problem, the same for everyone, changing at midnight UTC. It is scored like an ICPC contest, by problems solved and then by penalty (minutes to each accepted answer, plus 20 for every wrong submission before it). Each problem has its own colour, and solving it fills in that problem's balloon, the way a contest hands one out.
+### Hack
+
+This turns the game around. You write an input in the problem's input format, the way you would for a hack in a contest. A validator checks it against the constraints, then greedy and the exact solver both run on it. If greedy comes out worse, the hack succeeds and you can play your own test.
+
+<p align="center">
+  <img src="docs/hack.png" width="640" alt="Hack tab: input format, constraints, a four-town test and the result Successful hacking attempt">
+</p>
+
+### Editorial
+
+Each problem explains why the greedy fails and which technique gets it right, with the recurrence and the running time. After you solve a level it also shows the solver's table for that exact test, and you can put greedy's answer and the optimal one on the board to compare.
+
+<p align="center">
+  <img src="docs/editorial.png" width="640" alt="Editorial tab for the grid problem: the explanation, the recurrence and the DP table for the current test">
+</p>
+
+## The daily round
+
+One level of each problem, the same for everyone, changing at midnight UTC. It is scored like an ICPC contest: by problems solved, then by penalty, which is the minutes to each accepted answer plus 20 for every wrong submission before it. The site is a single static page, so it plays the same on a phone.
+
+<table>
+  <tr>
+    <td width="72%"><img src="docs/daily.png" alt="Daily round page with a standings row: three solved, penalty 20, a balloon per problem"></td>
+    <td width="28%"><img src="docs/phone.png" alt="The courier problem solved at phone size"></td>
+  </tr>
+</table>
 
 ## Quickstart
 
@@ -122,8 +186,11 @@ src/core/            game logic with no UI and no dependencies
 src/ui/              the React interface
 tests/               brute-force checks, judge, levels, README
 e2e/                 browser tests that play the game
-scripts/             npm run stats, npm run example
+scripts/             npm run stats, npm run example, npm run shots
+docs/                the images in this README
 ```
+
+The images in this README are not made by hand. `npm run shots` builds the site, plays it in a headless browser and takes them again. The GIF step needs Python with Pillow.
 
 Dependencies are pinned to exact versions in `package.json` and `package-lock.json`. GitHub Actions runs the type check, the unit tests, the build and the browser tests on every push to `main` and on pull requests, and publishes the site from `main` only if all of them pass.
 
