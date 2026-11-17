@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 // Set E2E_URL to run the same tests against a deployed copy, for example
-// E2E_URL=https://edward-012.github.io/greedy-trap/ npm run e2e
+// E2E_URL=https://greedy-trap.edward7780.com/ npm run e2e
 const deployed = process.env.E2E_URL
 
 export default defineConfig({

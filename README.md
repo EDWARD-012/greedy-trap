@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://edward-012.github.io/greedy-trap/"><b>Play it in your browser</b></a>
+  <a href="https://greedy-trap.edward7780.com/"><b>Play it in your browser</b></a>
 </p>
 
 <p align="center">

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://greedy-trap.edward7780.com/sitemap.xml
