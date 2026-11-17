@@ -4,7 +4,7 @@ A browser puzzle game made of seven small optimisation problems. Every level is 
 
 Play it here: https://edward-012.github.io/greedy-trap/
 
-![Problem E solved: the cheapest route is highlighted and the verdict reads Accepted](docs/screenshot.jpg)
+![The front page: a greedy rule struck out and stamped as a wrong answer, with the first level playable beside it](docs/screenshot.jpg)
 
 I build RL environments and automated graders for AI evaluation work. A grader is only worth something if you can check it, so this game is put together the way I would put one of those together: a seeded task generator, a baseline to beat, a reference solution, and a judge whose claims are each backed by a test.
 
@@ -28,7 +28,7 @@ Hack turns it around. You write an input in the problem's input format, the way 
 
 Editorial explains why the greedy fails and which technique gets it right, with the recurrence and the running time. After you solve a level it also shows the solver's table for that exact test, and you can put greedy's answer and the optimal one on the board to compare.
 
-There is also a daily round: one level of each problem, the same for everyone, changing at midnight UTC. It is scored like an ICPC contest, by problems solved and then by penalty (minutes to each accepted answer, plus 20 for every wrong submission before it).
+There is also a daily round: one level of each problem, the same for everyone, changing at midnight UTC. It is scored like an ICPC contest, by problems solved and then by penalty (minutes to each accepted answer, plus 20 for every wrong submission before it). Each problem has its own colour, and solving it fills in that problem's balloon, the way a contest hands one out.
 
 ## Quickstart
 
